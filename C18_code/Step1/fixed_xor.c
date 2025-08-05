@@ -4,35 +4,30 @@
 #include <string.h>
 #include <stdbool.h>
 
-// Converts a hex character to integer
-bool hex_char_to_value(char c, uint8_t *value) {
-    if ('0' <= c && c <= '9') {
-        *value = c - '0';
-    } else if ('a' <= c && c <= 'f') {
-        *value = c - 'a' + 10;
-    } else if ('A' <= c && c <= 'F') {
-        *value = c - 'A' + 10;
-    } else {
-        return false;
-    }
-    return true;
+// Convert a hex character to integer
+int hex_to_int(char c) {
+    if ('0' <= c && c <= '9') return c - '0';
+    if ('A' <= c && c <= 'F') return c - 'A' + 10;
+    if ('a' <= c && c <= 'f') return c - 'a' + 10;
+    return -1;  // Invalid hex digit
 }
 
-// Converts hex string to byte array
-bool hex_to_bytes(const char *hex, uint8_t *bytes, size_t *out_len) {
-    size_t hex_len = strlen(hex);
-    if (hex_len % 2 != 0) return false;
+// Convert hex string to byte array
 
-    *out_len = hex_len / 2;
-    for (size_t i = 0; i < *out_len; ++i) {
-        uint8_t high, low;
-        if (!hex_char_to_value(hex[2*i], &high) || !hex_char_to_value(hex[2*i+1], &low)) {
-            return false;
-        }
-        bytes[i] = (high << 4) | low;
+int hex_to_byte(const char* hex, uint8_t* out, int max_out_len) {
+    int len = strlen(hex);
+    if (len % 2 != 0) return -1;  // Hex must be even-length
+
+    int i;
+    for (i = 0; i < len / 2 && i < max_out_len; i++) {
+        int hi = hex_to_int(hex[2 * i]);
+        int lo = hex_to_int(hex[2 * i + 1]);
+        if (hi == -1 || lo == -1) return -1;  // Invalid hex digit
+        out[i] = (hi << 4) | lo;
     }
-    return true;
+    return i;  // number of bytes
 }
+
 
 // Converts byte array to hex string
 void bytes_to_hex(const uint8_t *bytes, size_t len, char *hex_out) {
