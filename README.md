@@ -7,3 +7,15 @@ All the 7 steps of cryptopals website in different programming languages.
   +  Encode them into base64.
   +   Avoiding buffer overflow.
   +   Ensuring only hex is accepted.
+### Challenge 2: Fixed XOR
+  + Takes two equal-length buffers (binary byte arrays).
+  + Produces a third buffer where each byte is the XOR of the corresponding bytes in the two inputs.
+  + Checks all buffers are of same length.
+### Challenge 3: Single byte XOR cipher
+  + Convert hex to raw bytes
+  + For all possible values of the key (00 to FF)
+      + XOR each byte of cipher text with key
+      + check if it is matches to English characters
+  + Score each result based on frequency of English letters
+  + Return best looking key and plaintext 
+   
