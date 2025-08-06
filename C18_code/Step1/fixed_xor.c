@@ -65,7 +65,7 @@ int main(void) {
         return 1;
     }
 
-    if (!hex_to_bytes(hex1, buf1, &len1) || !hex_to_bytes(hex2, buf2, &len2)) {
+    if (!hex_to_byte(hex1, buf1, &len1) || !hex_to_byte(hex2, buf2, &len2)) {
         fprintf(stderr, "Invalid hex input\n");
         return 1;
     }
