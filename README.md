@@ -25,5 +25,11 @@ All the 7 steps of cryptopals website in different programming languages.
       + XOR each byte of cipher text with key
       + check if it is matches to English characters
   + Score each result based on frequency of English letters
-  + Return best looking key and plaintext 
-   
+  + Return best looking key and plaintext
+### Challenge 5: Implementing Repeating key XOR
+  + Read the file
+  + Define a fixed key. In this case "ICE"
+  + Iterate over each byte of plaintext
+  + XOR each byte with key byte (cycled)
+  + print/save the resutl in hex string
+    + here max input length is considered to be 1024 to have control over the bytes we would like to read. 
