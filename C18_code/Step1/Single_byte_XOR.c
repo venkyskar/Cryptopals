@@ -47,7 +47,7 @@ int main() {
     uint8_t *cipher_bytes = malloc(hex_len / 2);
     uint8_t *decoded = malloc(hex_len / 2 + 1);
 
-    int byte_len = hex_to_bytes(hex_input, cipher_bytes);
+    int byte_len = hex_to_byte(hex_input, cipher_bytes);
     if (byte_len <= 0) {
         fprintf(stderr, "Invalid hex string.\n");
         return 1;
