@@ -17,5 +17,13 @@ All the 7 steps of cryptopals website in different programming languages.
       + XOR each byte of cipher text with key
       + check if it is matches to English characters
   + Score each result based on frequency of English letters
+  + Return best looking key and plaintext
+### Challenge 4: Detect single-character XOR 
+  + Read the file
+  + Convert hex to raw bytes
+  + For all possible values of the key (00 to FF)
+      + XOR each byte of cipher text with key
+      + check if it is matches to English characters
+  + Score each result based on frequency of English letters
   + Return best looking key and plaintext 
    
