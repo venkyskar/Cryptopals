@@ -43,7 +43,7 @@ double score_english(const uint8_t *data, int len) {
 }
 
 int main(void) {
-    FILE *file = fopen("4.txt", "r");
+    FILE *file = fopen("60Characterfile.txt", "r"); //file in repo
     if (!file) {
         printf("Failed to open file.\n");
         return 1;
