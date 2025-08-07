@@ -95,3 +95,4 @@ if (len1 != len2) {
     free(result);
     free(result_hex);
     return 0;
+}
