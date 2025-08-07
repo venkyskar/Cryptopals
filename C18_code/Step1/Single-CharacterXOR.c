@@ -17,16 +17,15 @@ int hex_to_int(char c) {
 // Convert hex string to byte array
 int hex_to_byte(const char* hex, uint8_t* out, int max_out_len) {
     int len = strlen(hex);
-    if (len % 2 != 0) return -1;
+    if (len % 2 != 0 || len / 2 > max_out_len) return -1;
 
-    int i;
-    for (i = 0; i < len / 2 && i < max_out_len; ++i) {
+    for (int i = 0; i < len / 2; ++i) {
         int hi = hex_to_int(hex[2 * i]);
         int lo = hex_to_int(hex[2 * i + 1]);
         if (hi == -1 || lo == -1) return -1;
         out[i] = (hi << 4) | lo;
     }
-    return i;
+    return len / 2;
 }
 
 // Score string by how "English-like" it is
@@ -37,13 +36,13 @@ double score_english(const uint8_t *data, int len) {
         if (isalpha(c)) score += 2.0;
         else if (isspace(c)) score += 1.0;
         else if (isprint(c)) score += 0.5;
-        else score -= 1.0;
+        else score -= 2.0;
     }
     return score;
 }
 
 int main(void) {
-    FILE *file = fopen("60Characterfile.txt", "r"); //file in repo
+    FILE *file = fopen("sample1.txt", "r");
     if (!file) {
         printf("Failed to open file.\n");
         return 1;
@@ -60,15 +59,20 @@ int main(void) {
 
     int line_number = 0;
     while (fgets(line, sizeof(line), file)) {
-        // Remove trailing newline
-        size_t line_len = strlen(line);
-        if (line[line_len - 1] == '\n') {
-            line[line_len - 1] = '\0';
-            line_len--;
+        // Trim trailing newline and carriage return
+        line[strcspn(line, "\r\n")] = '\0';
+
+        // Skip empty or invalid lines
+        if (strlen(line) == 0 || strlen(line) % 2 != 0) {
+            line_number++;
+            continue;
         }
 
         int byte_len = hex_to_byte(line, bytes, MAX_BYTES);
-        if (byte_len <= 0) continue;
+        if (byte_len <= 0) {
+            line_number++;
+            continue;
+        }
 
         // Try all possible single-byte XOR keys
         for (int key = 0; key < 256; ++key) {
@@ -81,7 +85,7 @@ int main(void) {
                 best_score = score;
                 best_key = key;
                 best_line_number = line_number;
-                strncpy(best_output, (char *)decoded, byte_len);
+                memcpy(best_output, decoded, byte_len);
                 best_output[byte_len] = '\0';
             }
         }
