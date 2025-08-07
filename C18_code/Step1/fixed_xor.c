@@ -30,7 +30,7 @@ int hex_to_byte(const char* hex, uint8_t* out, int max_out_len) {
 
 
 // Converts byte array to hex string
-void bytes_to_hex(const uint8_t *bytes, size_t len, char *hex_out) {
+void bytes_to_hex(const uint8_t *bytes, int len, char *hex_out) {
     const char *hex_chars = "0123456789abcdef";
     for (size_t i = 0; i < len; ++i) {
         hex_out[2*i]     = hex_chars[(bytes[i] >> 4) & 0x0F];
@@ -40,7 +40,7 @@ void bytes_to_hex(const uint8_t *bytes, size_t len, char *hex_out) {
 }
 
 // XORs two byte buffers
-bool xor_buffers(const uint8_t *buf1, const uint8_t *buf2, uint8_t *result, size_t len) {
+bool xor_buffers(const uint8_t *buf1, const uint8_t *buf2, uint8_t *result, int len) {
     if (!buf1 || !buf2 || !result) return false;
 
     for (size_t i = 0; i < len; ++i) {
@@ -54,7 +54,7 @@ int main(void) {
     const char *hex1 = "1c0111001f010100061a024b53535009181c";
     const char *hex2 = "686974207468652062756c6c277320657965";
 
-    size_t len1, len2;
+    
     uint8_t *buf1 = malloc(strlen(hex1) / 2);
     uint8_t *buf2 = malloc(strlen(hex2) / 2);
     uint8_t *result = malloc(strlen(hex1) / 2);
@@ -65,16 +65,19 @@ int main(void) {
         return 1;
     }
 
-    if (!hex_to_byte(hex1, buf1, &len1) || !hex_to_byte(hex2, buf2, &len2)) {
-        fprintf(stderr, "Invalid hex input\n");
-        return 1;
-    }
+   int max_len = strlen(hex1) / 2;
+int len1 = hex_to_byte(hex1, buf1, max_len);
+int len2 = hex_to_byte(hex2, buf2, max_len);
 
-    if (len1 != len2) {
-        fprintf(stderr, "Buffers are not the same length\n");
-        return 1;
-    }
+if (len1 <= 0 || len2 <= 0) {
+    fprintf(stderr, "Invalid hex input\n");
+    return 1;
+}
 
+if (len1 != len2) {
+    fprintf(stderr, "Buffers are not the same length\n");
+    return 1;
+}
     xor_buffers(buf1, buf2, result, len1);
     bytes_to_hex(result, len1, result_hex);
 
@@ -92,4 +95,3 @@ int main(void) {
     free(result);
     free(result_hex);
     return 0;
-}
