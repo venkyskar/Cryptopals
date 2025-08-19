@@ -32,4 +32,28 @@ All the 7 steps of cryptopals website in different programming languages.
   + Iterate over each byte of plaintext
   + XOR each byte with key byte (cycled)
   + print/save the resutl in hex string
-    + here max input length is considered to be 1024 to have control over the bytes we would like to read. 
+    + here max input length is considered to be 1024 to have control over the bytes we would like to read.
+### Challenge 6: Breaking Repeating key XOR
+  + Read the file
+  + Decode base64 input
+  + Guess the size
+     + for all the key size fron 2 to 40
+     + take the bytes from file equivalent to keysize
+     + Compute the normalized hamming distance between those blocks (distance/Keysize)
+     + the lowest normalised distance is the keysize
+  + break the text into blocks
+  + solve each block with single byte XOR attack using the scoring method from challenge 3
+  + Reconstruct the full key
+  + Decrypt the ciphertext
+### Challenge 7: AES in ECB mode
+              **TBD**
+### Challenge 8: Detect AES-ECB
+  + Read the file
+  + Convert Hex to bytes
+  + Divide into 16byte blocks
+  + Count repeating blocks
+       + ECB mode lacks randomization or chaining.
+       + So it leaks structure: repeated plaintext leads to repeated ciphertext.
+       + Detecting repeated 16-byte ciphertext blocks is a reliable ECB fingerprint.
+  + Track Max repeats
+
